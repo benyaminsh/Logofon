@@ -1,0 +1,69 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block context %}
+        <div class="hero-wrap hero-wrap-2" style="background-image: url('{% static "site/images/image_6.jpg" %}'); background-attachment:fixed;">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-8 ftco-animate text-center">
+              <h1 class="mb-3 bread" style="text-align: center">محصولات فیزیکی</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section">
+    	<div class="container">
+    		<div class="row">
+            {% for product in prodcuts %}
+    			<div class="col-md-4 d-flex ftco-animate">
+    				<div class="course align-self-stretch">
+    					<a href="#" class="img" style="background-image: url('{{ product.image.url }}')"></a>
+    					<div class="text p-4">
+    						{% if product.price is 0 %}
+                                <p class="category"><span class="price" style="background-color: #00FF00 !important;">رایگان</span></p>
+                            {% else %}
+                                <p class="category"><span class="price">{{ product.price }} تومن</span> <span>: قیمت </span></p>
+                            {% endif %}
+    						<h3 class="mb-3"><a href="#">{{ product.title }}</a></h3>
+    						<p>{{ product.about | truncatechars:200 | safe }}</p>
+    						<p><a href="{% url 'product:productDisplay_page' product.slug %}" class="btn btn-primary">نمایش محصول</a></p>
+    					</div>
+    				</div>
+    			</div>
+            {% endfor %}
+
+    		</div>
+    		<div class="row mt-5">
+          <div class="col text-center">
+            <div class="block-27" style="margin-right: 400px">
+              <ul>
+                  {% if prodcuts.has_previous %}
+                    <li><a href="{% url 'product:physicalProducts_page' %}?page={{ prodcuts.previous_page_number }}"><</a></li>
+                    {% endif %}
+
+
+                  {% for p in prodcuts.paginator.page_range %}
+                      {% if prodcuts.number == p %}
+                          <li class="active"><span><a href="{% url 'product:physicalProducts_page'  %}?page={{ p }}">{{ p }}</a></span></li>
+                      {% else %}
+                          <li><span><a href="{% url 'product:physicalProducts_page'  %}?page={{ p }}">{{ p }}</a></span></li>
+                      {% endif %}
+                  {% endfor %}
+
+
+                {% if prodcuts.has_next %}
+                    <li><a href="{% url 'product:physicalProducts_page' %}?page={{ prodcuts.next_page_number }}"> > </a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+    	</div>
+    </section>
+{% endblock %}

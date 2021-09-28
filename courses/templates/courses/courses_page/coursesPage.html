@@ -1,0 +1,67 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block context %}
+
+
+     <div class="hero-wrap hero-wrap-2" style="background-image: url('{% static "site/images/backGround.jpg" %}'); background-attachment:fixed;">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-8 ftco-animate text-center">
+              <h1 class="mb-3 bread" style="text-align: center" >دوره ها</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section">
+    	<div class="container">
+    		<div class="row d-flex">
+        {% for post in posts %}
+            <div class="col-md-4 d-flex ftco-animate">
+                <div class="blog-entry align-self-stretch" style="width: 100%;height: 20%;">
+                  <a href="{% url 'courses:ShowCourse_page'  post.id %}" class="block-20" style="background-image: url('{{ post.CourseImage.url }}');">
+                  </a>
+                  <div class="text p-4 d-block">
+                    <h3 class="heading mt-3"><a href="{% url 'courses:ShowCourse_page'  post.id %}">{{ post.CourseName }}</a></h3>
+                    <br>
+                    <p><a href="{% url 'courses:ShowCourse_page' post.id %}" class="btn btn-primary">نمایش دوره</a></p>
+                  </div>
+                </div>
+            </div>
+       {% endfor %}
+          </div>
+    		<div class="row mt-5">
+          <div class="col text-center">
+            <div class="block-27" style="margin-right: 400px">
+              <ul>
+                  {% if posts.has_previous %}
+                    <li><a href="{% url 'courses:ShowCourse_page' %}?page={{ posts.previous_page_number }}"><</a></li>
+                    {% endif %}
+
+
+                  {% for p in posts.paginator.page_range %}
+                      {% if posts.number == p %}
+                          <li class="active"><span><a href="{% url 'courses:courses_page'  %}?page={{ p }}">{{ p }}</a></span></li>
+                      {% else %}
+                          <li><span><a href="{% url 'courses:courses_page'  %}?page={{ p }}">{{ p }}</a></span></li>
+                      {% endif %}
+                  {% endfor %}
+
+
+                {% if posts.has_next %}
+                    <li><a href="{% url 'courses:courses_page' %}?page={{ posts.next_page_number }}"> > </a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+    	</div>
+    </section>
+
+{% endblock %}

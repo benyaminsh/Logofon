@@ -1,0 +1,100 @@
+{% extends 'userPanel/base/index.html' %}
+
+
+{% block title %}
+پنل کاربری - دیدگاه های تایید نشده
+{% endblock %}
+
+{% block context %}
+
+  <section class="content-header">
+    <h1>
+      دیدگاه های تایید نشده
+    </h1>
+  <br>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+  <! ------------------------- >
+
+  <br>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <table class="table table-striped table-bordered table-hover"
+              style="border: 1px solid #dddddd;text-align: center;">
+              <thead>
+                <tr>
+                  <th>شناسه</th>
+                  <th>دیدگاه</th>
+                  <th>پست</th>
+                  <th>وضعیت</th>
+                  <th>تاریخ ثبت</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for comment in comments %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ comment.text }}</td>
+                  <td>{{ comment.slug }}</td>
+                  <td title="درانتظار تایید"><i class="mdi mdi-close-circle mdi-24px" style="color: rgb(201, 57, 57);"></i></td>
+                  <td>{{ comment.date }}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <style>
+          .table-bordered>thead>tr>th,
+          .table-bordered>tbody>tr>th,
+          .table-bordered>tfoot>tr>th,
+          .table-bordered>thead>tr>td,
+          .table-bordered>tbody>tr>td,
+          .table-bordered>tfoot>tr>td {
+            border: 1px solid #dddddd;
+            vertical-align: text-bottom;
+            text-align: center;
+          }
+        </style>
+
+
+        <br>
+        <br>
+        <br>
+
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+            <nav aria-label="Page navigation" style="text-align: center;">
+              <ul class="pagination">
+                  {% if comments.has_previous %}
+                    <li>
+                      <a href="{% url 'userPanel:unapprovedComments_page' %}?page={{ comments.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                  {% endif %}
+
+                    </li>
+                    {% for p in comments.paginator.page_range %}
+                        <li><a href="{% url 'userPanel:unapprovedComments_page' %}?page={{ p }}">{{ p }}</a></li>
+                        <li>
+                    {% endfor %}
+
+
+                    {% if comments.has_next %}
+                        <a href="{% url 'userPanel:unapprovedComments_page' %}?page={{ comments.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    {% endif %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block keyWord %}
+    {{ aboutMe.keyWord }}
+{% endblock %}
+
+
+{% block description %}
+    {{ aboutMe.descriptions | safe }}
+{% endblock %}
+
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+{% block context %}
+
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center">
+        	<div class="col-md-10">
+        		<div class="row">
+        			<div class="col-md-12 mb-5">
+        				<div class="teacher-details d-md-flex">
+        					<div class="img ftco-animate" style="background-image: url('{{ aboutMe.image.url }}');"></div>
+        					<div class="text ftco-animate">
+        						<h3>{{ aboutMe.name }}</h3>
+	        					<span class="position">مدرس تمام دوره ها</span>
+	        					<p>{{ aboutMe.descriptions | safe }}</p>
+
+
+	        					<div class="mt-4">
+	        						<h6>برنامه نویس  وب سایت : بنیامین شکوهی نیا</h4>
+								</div>
+								
+
+	        					<div class="mt-4">
+	        						<h4> شبکه های اجتماعی</h4>
+								</div>
+								
+		        				<p class="ftco-social d-flex">
+				                <a href="{{ settings.whatsapp_link }}" target="_blank" class="d-flex justify-content-center align-items-center"><span style="font-size: 1.73em !important;color: green;" class="icon-whatsapp"></span></a>
+				                <a href="tg://{{ settings.telegram_id }}" class="d-flex justify-content-center align-items-center"><span style="font-size: 1.73em !important;" class="icon-telegram"></span></a>
+				                <a href="https://instagram.com/{{ settings.instagram_id }}" class="d-flex justify-content-center align-items-center"><span style="font-size: 1.73em !important;color: red;" class="icon-instagram"></span></a>
+				              </p>
+			              </div>
+        					</div>
+
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+
+
+{% endblock %}

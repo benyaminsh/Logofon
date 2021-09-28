@@ -1,0 +1,104 @@
+{% extends 'userPanel/base/index.html' %}
+
+
+{% block title %}
+پنل کاربری - دوره ها 
+{% endblock %}
+
+{% block context %}
+    <section class="content-header">
+        <h1>
+          دوره ها
+        </h1>
+      <br>
+    </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+  <! ------------------------- >
+
+  <br>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <table class="table table-striped table-bordered table-hover"
+              style="border: 1px solid #dddddd;text-align: center;">
+              <thead>
+                <tr>
+                  <th>شناسه</th>
+                  <th>نام</th>
+                  <th>قیمت خریداری شده</th>
+                  <th>دوره</th>
+                  <th>تصویر</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for cr in courses %}
+                <tr>
+                  <th scope="row">{{ cr.id }}</th>
+                  <td>{{ cr.course.CourseName }}</td>
+                  {% if cr.price %}
+                  <td>رایگان</td>
+                  {% else %}
+                  <td>{{ cr.price }} تومان</td>
+                  {% endif %}
+
+                  <td><a href="{% url 'courses:ShowCourse_page' cr.course.id %}"  class="btn btn-info" >نمایش دوره</a></td>
+                  <td><img src="{{ cr.course.CourseImage.url }}" height="60px"></td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <style>
+          .table-bordered>thead>tr>th,
+          .table-bordered>tbody>tr>th,
+          .table-bordered>tfoot>tr>th,
+          .table-bordered>thead>tr>td,
+          .table-bordered>tbody>tr>td,
+          .table-bordered>tfoot>tr>td {
+            border: 1px solid #dddddd;
+            vertical-align: text-bottom;
+            text-align: center;
+          }
+        </style>
+
+
+        <br>
+        <br>
+        <br>
+
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+            <nav aria-label="Page navigation" style="text-align: center;">
+              <ul class="pagination">
+
+              {% if courses.has_previous %}
+                <li>
+                  <a href="{% url 'userPanel:courses_page' %}?page={{ courses.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+              {% endif %}
+
+                </li>
+                {% for c in courses.paginator.page_range %}
+                    <li><a href="{% url 'userPanel:courses_page' %}?page={{ c }}">{{ c }}</a></li>
+                    <li>
+                {% endfor %}
+
+
+                {% if courses.has_next %}
+                    <a href="{% url 'userPanel:courses_page' %}?page={{ courses.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                {% endif %}
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+{% endblock %}

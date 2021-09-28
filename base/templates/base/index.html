@@ -1,0 +1,490 @@
+{% load static %}
+{% load html_tags %}
+{% settings as setting %}
+{% blogs as blogs %}
+{% Logo as Logo %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="{% block keyWord %}{% endblock %}">
+    <meta name="description" content="{% block description %}{% endblock %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="index, follow" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ setting.favicon.url }}" />
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'site/css/open-iconic-bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'site/css/animate.css' %}">
+
+    <link rel="stylesheet" href="{% static 'site/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'site/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'site/css/magnific-popup.cssf' %}">
+
+    <link rel="stylesheet" href="{% static 'site/css/aos.css' %}">
+
+    <link rel="stylesheet" href="{% static 'site/css/ionicons.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'site/css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'site/css/jquery.timepicker.css' %}">
+
+    <link rel="stylesheet" href="{% static 'site/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'site/css/icomoon.css' %}">
+    <link rel="stylesheet" href="{% static 'site/css/style.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'site/fonts/mdicon/MaterialDesign-Webfont-master/css/materialdesignicons.min.css' %}"
+          type="text/css">
+
+    <!--- Alearts --->
+    <link rel="stylesheet" href="{% static 'alearts/style.css' %}">
+    <style>
+        div.a {
+            color: #1c3664;
+        }
+    </style>
+
+</head>
+
+<body onload="refPriceBuys()" >
+
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+        <a href="/"><img src="{{ Logo.url }}" style="width: 100px; height: 95px"></a>
+    
+        {% if request.user.is_authenticated %}
+        <span class="nav-item" onclick="click_open_cart()"
+              style="position: relative;top: -20px;cursor: pointer;order: -1;">
+        <a class="nav-link icon"
+           style="position: relative;padding-right: 50px;margin: 0;padding: 0;padding-right: 50px;border-radius: 28px;line-height: 0;">
+          <span class="mdi mdi-cart"
+                style="position: absolute;line-height: 25px;font-size: 25px;background: #167ce9;color: #fff;padding: 10px;border-radius: 10px;">
+            <span id="refPriceBuys_rm2"
+                    style="position: absolute;color:#fff;font-size: 0.8rem;background-color: red;bottom: 1px;right: 0px;line-height: 1rem;padding: 3px 8px;border-radius: 40px;">
+              0
+            </span>
+          </span>
+        </a>
+      </span>
+      {% endif %}
+
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+             منو
+             <span class="oi oi-menu"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item {% if request.path == '/' %}active{% endif %}"><a href="/" class="nav-link">خانه</a>
+                </li>
+                <li class="nav-item {% if request.path == '/courses/' %}active{% endif %}"><a
+                        href="{% url 'courses:courses_page' %}" class="nav-link">دوره ها</a></li>
+                <li class="nav-item  dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown">محصولات</a>
+                    <ul class="dropdown-menu" style="background-color: #167ce9;color: #fff;top:85%;text-align: center;">
+                        <li><a href="{% url 'product:physicalProducts_page' %}" style="padding: 5px;color: #fff;">محصولات
+                            فیزیکی</a></li>
+                        <li><a href="{% url 'product:digitalProducts_page' %}" style="padding: 5px;color: #fff;">محصولات
+                            دیجیتالی</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item {% if request.path == '/blog/' %}active{% endif %}"><a
+                        href="{% url 'blog:blogs_page' %}" class="nav-link">وبلاگ</a></li>
+
+                <li class="nav-item {% if request.path == '/news/' %}active{% endif %}"><a
+                        href="{% url 'news:news_page' %}" class="nav-link">اخبار</a></li>
+
+                <li class="nav-item {% if request.path == '/about-us/' %}active{% endif %}"><a
+                        href="{% url 'aboutUs:aboutus_page' %}" class="nav-link">درباره ما</a></li>
+                <li class="nav-item {% if request.path == '/contact-us/' %}active{% endif %}"><a
+                        href="{% url 'contact:contactus_page' %}" class="nav-link">تماس با ما</a></li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item cta"><a href="{% url 'userPanel:userPanel_page' %}" class="nav-link" style="padding-bottom: 14px;padding-top:15px"><span>حساب کاربری</span></a>
+                    </li>
+                {% else %}
+                    <li class="nav-item cta"><a href="{% url 'account:login_page' %}" class="nav-link" style="padding-bottom: 14px;padding-top:15px"><span>ثبت نام / ورود</span></a>
+                    </li>
+                {% endif %}
+            {% csrf_token %}
+
+                <script>
+                    function click_open_cart() {
+                        document.querySelector('#target_click_open_cart').toggleAttribute('hidden');
+                        updateCart();
+                        refPriceBuys();
+                    }
+                </script>
+
+            {% if request.user.is_authenticated %}
+                <li class="nav-item" onclick="click_open_cart()" style="position: relative;top: -20px;cursor: pointer;">
+                    <a class="nav-link icon"
+                       style="position: relative;padding-right: 50px;margin: 0;padding: 0;padding-right: 50px;border-radius: 28px;line-height: 0;">
+              <span class="mdi mdi-cart"
+                    style="position: absolute;line-height: 25px;font-size: 25px;background: #167ce9;color: #fff;padding: 10px;border-radius: 10px;">
+                <span id="refPriceBuys_rm"
+                        style="position: absolute;color:#fff;font-size: 0.8rem;background-color: red;bottom: 1px;right: 0px;line-height: 1rem;padding: 3px 8px;border-radius: 40px;">0</span>
+                    <script>
+                        function refPriceBuys(e){
+                            //console.log('lol M Fucker')
+                            let refPriceBuys_rm = document.querySelector('#refPriceBuys_rm');
+                            let refPriceBuys_rm2 = document.querySelector('#refPriceBuys_rm2');
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('GET', '{% url "api:number" %}', true);
+                            xhr.onload = function (e) {
+                                if (this.status >= 200 && this.status < 300 ){
+                                    //console.log(this.responseText)
+                                    if (this.responseText == `{"Number":"0"}`){
+                                        console.log ('lol',this.responseText)
+                                        refPriceBuys_rm.innerHTML = 0;
+                                        refPriceBuys_rm2.innerHTML = 0;
+
+                                    } else {
+                                        let res = JSON.parse(this.responseText);
+                                        //console.log(res,this.status);
+                                        refPriceBuys_rm.innerHTML = res.Number;
+                                        refPriceBuys_rm2.innerHTML = res.Number;
+                                    }
+                                } else {
+                                    //console.log('you fucker ',this.status)
+                                }
+                            }
+                            xhr.onerror = function(e){
+                                console.log('F Fucker :|')
+                            }
+                            xhr.send();
+                        }
+
+                    </script>                        
+              </span>
+                    </a>
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+        <span id="target_click_open_cart" hidden="hidden" onclick="click_open_cart()"
+              style="cursor: auto;position: fixed;background-color: rgba(39, 39, 39, 0.8);top: 0;left: 0;width: 100%;height: 100%;">
+        <span
+                style="display: flex;color: #fff;justify-content: center;align-items: center;align-content: center;width: 100%;height: 100%;flex-direction: column;">
+          <span onclick="event.stopPropagation();refPriceBuys();"
+                style="background: #fff;width: 60%;height: 70%;overflow-y: auto;padding: 15px;border-radius: 10px;position: relative;text-align: right;">
+            <span onclick="click_open_cart()" class="close-pop mdi mdi-close-box"
+                  style="font-size: 2rem;color: rgb(255, 70, 70);cursor: pointer;position: absolute;top: 0;left: -30px;">
+            </span>
+            <table class="table" style="text-align: center;direction: rtl;">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>نام محصول</th>
+                  <th>قیمت</th>
+                  <th>تصویر  </th>
+                  <th>حذف از سبد</th>
+                </tr>
+              </thead>
+              <tbody id="tbody">
+
+
+
+              </tbody>
+            </table>
+          </span>
+
+
+          <span
+                  style="font-size: 1.2rem;direction: rtl;display: flex;justify-content: space-around;width: 90%;background-color: #fff;border-radius: 50px;margin-top: 5px;padding: 5px;">
+            <b>جمع کل :</b>
+            <b id="totulePrice">0</b>
+
+            <a href="{% url 'payment:Factor_page' %}" id="endBuys" class="btn btn-success" style="border-radius: 10px;">تکمیل پرداخت</a>
+          </span>
+        </span>
+      </span>
+
+        <script>
+            function deleteorder(id) {
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                // console.log('============================== >',csrftoken);
+                const url = '{% url "api:deleteOrder" %}'
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true)
+                xhr.onload = function (e) {
+                    if (this.status === 200) {
+                        // console.log(this.responseText, ":", e);
+                        updateCart();
+                    } else {
+                        const url2 = '{% url "api:deleteCourses" %}'
+                        const xhr2 = new XMLHttpRequest();
+                        xhr2.open('POST', url2, true)
+                        xhr2.onload = function (e) {
+                            if (this.status === 200) {
+                            // console.log(this.responseText, ":", e);
+                            updateCart();
+                            } else {
+                                alert('LOL2222')
+                            }
+                        }
+                        xhr2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                        xhr2.setRequestHeader('X-CSRFToken', csrftoken);
+                        xhr2.send(`id=${id}`)
+                    }
+                    
+                }
+                xhr.onerror = function () {
+                    console.log('LOL 2')
+                }
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                xhr.send(`id=${id}`)
+
+            }
+
+
+            function updateCart() {
+                
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', '{% url "api:list" %}', true);
+                xhr.onload = function (e) {
+                    let res = JSON.parse(this.responseText);
+                   //console.log(res);
+                    if (res == false){
+                        document.querySelector('#endBuys').setAttribute('hidden','hidden');
+                    } else {
+                        document.querySelector('#endBuys').removeAttribute('hidden');
+                    }
+                    document.querySelector('#tbody').innerHTML = '';
+                    let totulePrice = 0;
+                    res.forEach(data => {
+                        totulePrice += data.price
+                        document.querySelector('#tbody').innerHTML += `
+                        <tr>
+                  <th scope="row">${data.id}</th>
+                  <td>${data.title}</td>
+                  <td>${data.price}</td>
+                  <td><img src="${data.photo}"  alt="${data.title}" height="60px"></td>
+                  <td><a onclick="deleteorder(${data.id})" style="cursor: pointer;font-size: 1.5rem;color: rgb(255, 70, 70);"><i class="close-pop mdi
+                            mdi-close"></i></a>
+                  </td>
+                </tr>
+                     `;
+                    })
+                    refPriceBuys();
+                    document.querySelector('#totulePrice').innerHTML = totulePrice + ' تومان';
+                }
+                xhr.send();
+                
+            }
+        </script>
+    </div>
+</nav>
+
+<style>
+    .table > tbody:nth-child(2) > tr > td,
+    .table > tbody:nth-child(2) > tr > th {
+        vertical-align: middle;
+    }
+
+    /* < 990px */
+    @media (max-width: 990px) {
+        li.nav-item:nth-child(9) > a:nth-child(1),
+        #ftco-nav > ul > li:nth-child(11) {
+            display: none;
+        }
+        
+
+        #target_click_open_cart > span:nth-child(1) > span:nth-child(1) {
+            width: 90% !important;
+        }
+
+    }
+
+    /* > 990px */
+    @media (min-width: 990px) {
+        span.nav-item {
+            display: none;
+        }
+
+        #target_click_open_cart > span:nth-child(1) > span:nth-child(2) {
+            width: 60% !important;
+        }
+    }
+</style>
+
+
+<!-- END nav -->
+
+
+{% block context %}
+{% endblock %}
+
+
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="row" style="margin-right: 10px">
+                <div class="alert success-alert col-md-4" style="right: 0;width: 40%;flex-direction: row-reverse;">
+                    <h3>{{ message }}</h3>
+                    <a class="close" style="width: 40px;">&times;</a>
+                </div>
+            </div>
+        {% elif message.tags == 'error' %}
+            <div class="row" style="margin-right: 10px;">
+                <div class="alert danger-alert col-md-4" style="right: 0;flex-direction: row-reverse;">
+                    <h3>{{ message }}</h3>
+                    <a class="close" style="width: 40px;">&times;</a>
+                </div>
+            </div>
+
+
+
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+
+<footer class="ftco-footer ftco-bg-dark ftco-section img"
+        style="background-image: url('{% static "site/images/footer.jpg" %}'); background-attachment:fixed;">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-3">
+                <div class="ftco-footer-widget mb-4">
+                    <a href='/'><img  src="{{ Logo.url }}" style="width: 150px; height: 150px;"></a>
+                    <br>
+                    <br>
+                    <p class="right-rm" '>LogoFon | آکادمی گفت و شنود</p>
+                    <br>
+                    <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+
+                        <a href="https://instagram.com/{{ settings.instagram_id }}"><img
+                                src="{% static 'site/images/instagram.jpg' %}"
+                                style="height: 50px;width: 50px; margin-left: 5px;border-radius: 50%;"></a>
+
+                        <a href="{{ settings.whatsapp_link }}"><img src="{% static 'site/images/whats app.jpg' %}"
+                                                                     style="height: 50px;width: 50px;margin-left: 5px;border-radius: 50%;"></a>
+
+                        <a href="tg://{{ settings.telegram_id }}"><img src="{% static 'site/images/telegram.jpg' %}"
+                                                                       style="height: 50px;width: 50px;margin-left: 5px;border-radius: 50%;"></a>
+
+
+
+                        <a href="{{ settings.youtube_link }}"><img
+                                src="{% static 'site/images/youtube.jpg' %}"
+                                style="height: 50px;width: 50px; margin-left: 5px;border-radius: 50%;"></a>
+
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2 right-rm">آخرین وبلاگ ها</h2>
+
+                    {% for blog in blogs %}
+                        <div class="block-21 mb-4 d-flex">
+                            <a class="blog-img mr-4"
+                               style="background-image: url('{{ blog.image.url }}');"></a>
+                            <div class="text">
+                                <h3 class="heading"><a
+                                        href="{% url 'blog:showBlog_page' blog.slug %}">{{ blog.title | truncatechars:60 | safe }}</a>
+                                </h3>
+                                <div class="meta">
+                                    <div dir="rtl"><a href="{% url 'blog:showBlog_page' blog.slug %}"><span class=""
+                                                                                                            style="margin-left: 5px !important;"></span>{{ blog.Pubdate }}
+                                    </a></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="ftco-footer-widget mb-4 ml-md-4">
+                    <h2 class="ftco-heading-2 right-rm">دسترسی سریع</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="py-2 d-block">خانه</a></li>
+                        <li><a href="{% url 'aboutUs:aboutus_page' %}" class="py-2 d-block">درباره ما</a></li>
+                        <li><a href="{% url 'contact:contactus_page' %}" class="py-2 d-block">تماس با ما</a></li>
+                        <li><a href="{% url 'courses:courses_page' %}" class="py-2 d-block">دوره ها</a></li>
+                        <li><a href="{% url 'blog:blogs_page' %}" class="py-2 d-block">وبلاگ</a></li>
+                        <li><a href="{% url 'news:news_page' %}" class="py-2 d-block">اخبار</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2 right-rm">سوالی دارید؟</h2>
+                    <div class="block-23 mb-3" dir="rtl">
+                        <ul>
+                            <li><span class="icon icon-map-marker"></span><span
+                                    class="text">{{ setting.address }}</span></li>
+                            <li><a href="#"><span class="icon icon-phone"></span><span
+                                    class="text">{{ setting.phone }}</span></a></li>
+                            <li><a href="#"><span class="icon icon-envelope"></span><span
+
+                                    class="text">{{ setting.email }}</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+
+                <p style="text-align: center !important;">
+                    <i aria-hidden="true">این وب سایت متعلق به <a href="{% url 'aboutMe:aboutDr' %}" target="_blank">دکتر
+                        عباس زاهدی</a> می باشد</i>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </p>
+            </div>
+        </div>
+    </div>
+
+</footer>
+
+
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen">
+    <svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00"/>
+    </svg>
+</div>
+
+
+<script src="{% static 'site/js/jquery.min.js' %}"></script>
+<script src="{% static 'site/js/jquery-migrate-3.0.1.min.js' %}"></script>
+<script src="{% static 'site/js/popper.min.js' %}"></script>
+<script src="{% static 'site/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'site/js/jquery.easing.1.3.js' %}"></script>
+<script src="{% static 'site/js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'site/js/jquery.stellar.min.js' %}"></script>
+<script src="{% static 'site/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'site/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'site/js/aos.js' %}"></script>
+<script src="{% static 'site/js/jquery.animateNumber.min.js' %}"></script>
+<script src="{% static 'site/js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'site/js/jquery.timepicker.min.js' %}"></script>
+<script src="{% static 'site/js/scrollax.min.js' %}"></script>
+<script
+        src="{% static 'site/address/map.html' %}"></script>
+<script src="{% static 'site/js/google-map.js' %}"></script>
+<script src="{% static 'site/js/main.js' %}"></script>
+<!--- Alearts --->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<script src="{% static 'alearts/script.js' %}"></script>
+
+</body>
+
+</html>

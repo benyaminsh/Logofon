@@ -1,0 +1,108 @@
+{% extends 'userPanel/base/index.html' %}
+
+
+{% block title %}
+پنل کاربری - محصولات فیزیکی
+{% endblock %}
+
+{% block context %}
+    <section class="content-header">
+        <h1>
+          محصولات فیزیکی
+        </h1>
+      <br>
+    </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+  <! ------------------------- >
+
+  <br>
+       <br>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <table class="table table-striped table-bordered table-hover"
+              style="border: 1px solid #dddddd;text-align: center;">
+              <thead>
+                <tr>
+                  <th>شناسه</th>
+                  <th>نام</th>
+                  <th>قیمت خریداری شده</th>
+                  <th>آدرس</th>
+                  <th>وضعیت ارسال</th>
+                  <th>تصویر</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for pr in products %}
+                <tr>
+                  <th scope="row">{{ pr.id }}</th>
+                  <td>{{ pr.product.title }}</td>
+                  <td>{{ pr.price }}تومان</td>
+                  <td>{{ pr.address }}</td>
+                    {% if pr.post_status is True %}
+                        <td title="محصول ارسال شده"><i class="mdi mdi-check-circle mdi-24px" style="color: rgb(41, 165, 41);"></i></td>
+                    {% elif pr.post_status is False %}
+                        <td title="محصول ارسال نشده است لطفا با پشتیبانی تماس بگیرید"><i class="mdi mdi-close-circle mdi-24px" style="color: rgb(201, 57, 57);"></i></td>
+                    {% else %}
+                        <td title="در حال پیگیری"><i class="mdi mdi-timer-sand mdi-24px" style="color: rgb(0, 109, 252);"></i></td>
+                    {% endif %}
+                  <td><img src="{{ pr.product.image.url }}" height="60px"></td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <style>
+          .table-bordered>thead>tr>th,
+          .table-bordered>tbody>tr>th,
+          .table-bordered>tfoot>tr>th,
+          .table-bordered>thead>tr>td,
+          .table-bordered>tbody>tr>td,
+          .table-bordered>tfoot>tr>td {
+            border: 1px solid #dddddd;
+            vertical-align: text-bottom;
+            text-align: center;
+          }
+        </style>
+
+
+        <br>
+        <br>
+        <br>
+
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+            <nav aria-label="Page navigation" style="text-align: center;">
+              <ul class="pagination">
+
+              {% if products.has_previous %}
+                <li>
+                  <a href="{% url 'userPanel:physicalProducts_page' %}?page={{ products.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+              {% endif %}
+
+                </li>
+                {% for p in products.paginator.page_range %}
+                    <li><a href="{% url 'userPanel:physicalProducts_page' %}?page={{ p }}">{{ p }}</a></li>
+                    <li>
+                {% endfor %}
+
+
+                {% if products.has_next %}
+                    <a href="{% url 'userPanel:physicalProducts_page' %}?page={{ products.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                {% endif %}
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+{% endblock %}

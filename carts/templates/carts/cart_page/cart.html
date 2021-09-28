@@ -1,0 +1,63 @@
+{% extends 'base/44.html' %}
+
+{% block content %}
+
+
+<div class="container my-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <p class="fs-5">سبد خرید</p>
+            <hr>
+            
+             {% if order is 0 %}
+                <p>سبد خرید شما خالی می باشد.</p>
+                <p class="d-inline">صفحه محصولات</p>
+                <a href="{% url 'product:products_page' %}" class="btn btn-rounded">مشاهده</a>
+             {% else %}
+                            
+                <div class="container my-5">
+                    <div class="table-responsive">
+                    <table class="table text-center">
+                        <thead  style="background-color:#6b03fc; color: #fff;"> 
+                        <tr>
+                            <th scope="col">محصول</th>
+                            <th scope="col">نام</th>
+                            <th scope="col">تخفیف</th>
+                            <th scope="col">قیمت</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {%  for Order in order %}
+                            <tr id="product_{{ Order.product.id }}">
+                                <td><a href="{% url 'product:products_page' %}{{ Order.product.slug }}"><img class="img-fluid" style="width: 100px; height: 100px" alt="{{ Order.product.title }}" src="{{ Order.product.image.url }}" width="200" ></a></td>
+                                <td style="min-width:    220px;max-width: 250px;">{{ Order.product.title }}</td>
+                                {% if Order.discount_price is 0 %}
+                                <td>-</td>
+                                <td>{{ Order.price }} تومان</td>
+                                {% else %}
+                                <td>{{ Order.product.discount_percent }}%</td>
+                                <td>{{ Order.discount_price }} تومان</td>
+                                {% endif %}
+
+                                <td><p id="price_{{ Order.product.id }}"></p></td>
+                                <td><a href="{% url 'cart:deleteOrder_page' Order.product.id  %}"><button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                <br>
+                <hr>
+                <br>
+                <a href="{% url 'payment:request_page' %}"><input type="submit" value="پرداخت" style="width: 1000px;  text-align: center height: 50px;" class="btn account-button table-responsive"></a>
+                </div>
+
+             {% endif %} 
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

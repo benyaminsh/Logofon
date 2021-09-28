@@ -1,0 +1,247 @@
+{% extends 'base/index.html' %}
+
+
+{% block title %}=
+    {{ title }}
+{% endblock %}
+
+
+{% block context %}
+  <section class="ftco-section ftco-degree-bg">
+    <div class="container">
+
+  
+    {% if cart_len %}
+
+      <h5 style='margin-right: 35%;'>سبد خرید شما خالی است</h4>
+    {% else %}
+
+      {% if status %}
+      
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="row" style="justify-content: right;">
+        
+              <div class="col-md-8" style="text-align: right; direction: rtl;display: flex;flex-direction: column;">
+                <span style="font-size: 1.4rem;">لطفا فرم زیرا برای دریافت محصول وارد نمایید : </span>
+                <br>
+                <div class="form-group">
+                  <label for="exampleInputEmail11">نام و نام خانوادگی دریافت کننده : </label>
+                  <input type="text" name='reciver' class="form-control" id="exampleInputEmail11" placeholder="نام و نام خانوادگی">
+                </div>
+                <label for="exampleInputEmail12">آدرس منزل : </label>
+                <textarea class="form-control" name="address" rows="3" id="exampleInputEmail12" placeholder="آدرس کامل منزل  همراه با پلاک   و..."></textarea>
+                <div class="form-group">
+                <br>
+                  <label for="exampleInputEmail13">کد پستی : </label>
+                  <input type="text" name="PostalCode" class="form-control" id="exampleInputEmail13" placeholder="کد پستی ...">
+                <br>
+
+                {% if TotalPrice is 0 %}
+
+                {% else %}
+                <label for="">کد تخفیف : </label>
+                <div id="priceTT">
+                  <input type="text" name="code" class="form-control" id="inpPriceTT" placeholder="کد تخفیف ...">
+                  <button onclick="addTT(event)">اعمال کد</button>
+                </div>
+                {% endif %}
+
+                {% csrf_token %}
+                <style>
+                  #priceTT {
+                    position: relative;
+                  }
+                  #priceTT > button {
+                    cursor: pointer;
+                    position: absolute;
+                    top:0;
+                    left:0;
+                    height:58px;
+                    padding:20px;
+                    /* width:62px; */
+                    border: none;
+                    background-color: #167ce9;
+                  
+                    display: flex;
+                    justify-content:center;
+                    align-items: center;
+                    font-size: 1.2rem;
+                    color: #fff;
+                  }
+                  #priceTT > button:hover {
+                    background-color: #3d92ee;
+                  }
+                </style>
+                <script>
+                  function addTT(e){
+                    e.preventDefault();
+                    let tp_rm = document.querySelector('#tp')
+                    let inpPriceTT = document.querySelector('#inpPriceTT').value;
+                    let csrfmiddlewaretoken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+                    if (inpPriceTT !== false){
+                      e.preventDefault();
+                      const xhttp = new XMLHttpRequest();
+                      xhttp.open('POST','{% url "api:discountCode" %}',true)
+                      xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                      xhttp.setRequestHeader('X-CSRFToken', csrfmiddlewaretoken);
+                      xhttp.send(`code=${inpPriceTT}`);
+                      
+                      xhttp.onload = function(e){
+                        // xhttp.onreadystatechange = function(){
+                          if (this.status === 200){                          
+                              // console.log(this.responseText);
+                              let req = JSON.parse(this.responseText);
+                              console.log(req);
+                              tp.innerHTML = req.ToTalPrice;
+                              alert('اعمال شد');
+                          } else {
+                            alert('کد تخفیف مشکل دارد و یا استفاده شده است')
+                          }
+                        // }
+                        // console.log('ok')
+                      }
+                      xhttp.onerror = function(){
+                        alert('یک مشکلی پیش آمده !!!')
+                      }
+                      
+                    }else {
+                      alert('کد تخفیف را وارد کنید!!!');
+                    }
+                    // e.preventDefault();
+                  }
+                  
+                  </script>
+              </div>
+        
+              <hr>
+              <div class="form-group">
+                <h5> جمع کل : <span  style="color: #000;">{{ TotalPrice }}</span> تومان</h5>
+
+              
+      
+                <h6  style="color: #000;">  تخفیف : <span id="tp" style="color: #000;"> {{ tp }} </span> تومان</h5>
+
+              </div>
+      
+              <input type="submit" style='font-size: 18px;' value="تکمیل پرداخت" class="btn btn-success">
+
+            </div>
+          </div>
+        </form>
+
+        {% else %}
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="row" style="justify-content: right;">
+
+            <style>
+              #priceTT {
+                position: relative;
+              }
+              #priceTT > button {
+                cursor: pointer;
+                position: absolute;
+                top:0;
+                left:0;
+                height:58px;
+                padding:20px;
+                /* width:62px; */
+                border: none;
+                background-color: #167ce9;
+              
+                display: flex;
+                justify-content:center;
+                align-items: center;
+                font-size: 1.2rem;
+                color: #fff;
+              }
+              #priceTT > button:hover {
+                background-color: #3d92ee;
+              }
+            </style>
+            <script>
+              function addTT(e){
+                e.preventDefault();
+                let tp_rm = document.querySelector('#tp')
+                let inpPriceTT = document.querySelector('#inpPriceTT').value;
+                let csrfmiddlewaretoken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+                if (inpPriceTT !== false){
+                  e.preventDefault();
+                  const xhttp = new XMLHttpRequest();
+                  xhttp.open('POST','{% url "api:discountCode" %}',true)
+                  xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                  xhttp.setRequestHeader('X-CSRFToken', csrfmiddlewaretoken);
+                  xhttp.send(`code=${inpPriceTT}`);
+                  
+                  xhttp.onload = function(e){
+                    // xhttp.onreadystatechange = function(){
+                      if (this.status === 200){                          
+                          // console.log(this.responseText);
+                          let req = JSON.parse(this.responseText);
+                          console.log(req);
+                          tp.innerHTML = req.ToTalPrice;
+                          alert('اعمال شد');
+                      } else {
+                        alert('کد تخفیف مشکل دارد و یا استفاده شده است')
+                      }
+                    // }
+                    // console.log('ok')
+                  }
+                  xhttp.onerror = function(){
+                    alert('یک مشکلی پیش آمده !!!')
+                  }
+                  
+                }else {
+                  alert('کد تخفیف را وارد کنید!!!');
+                }
+                // e.preventDefault();
+              }
+              
+              </script>
+              <div class="col-md-8" style="text-align: right; direction: rtl;display: flex;flex-direction: column;">
+                <span style="font-size: 1.4rem;"> برای دریافت محصول کلیک کنید : </span>
+                <br>
+
+              {% if TotalPrice is 0 %}
+
+              {% else %}
+              <label for="">کد تخفیف : </label>
+              <div id="priceTT">
+                <input type="text" name="code" class="form-control" id="inpPriceTT" placeholder="کد تخفیف ...">
+                <button onclick="addTT(event)">اعمال کد</button>
+              </div>
+              {% endif %}
+
+              
+        
+              <hr>
+              <div class="form-group">
+                <h5> جمع کل : <span  style="color: #000;">{{ TotalPrice }}</span> تومان</h5>
+
+                
+                  {% if TotalPrice is 0 %}
+
+                  {% else %}
+                  <h6  style="color: #000;">  تخفیف : <span id="tp" style="color: #000;"> {{ tp }} </span> تومان</h5>
+                  {% endif %}
+              </div>
+      
+              <input  type="submit" style='font-size: 18px;' value="دریافت " class="btn btn-success">
+
+            
+            </div>
+          </div>
+        </form>
+
+        
+        {% endif %}
+    {% endif %}
+
+
+    </div>
+  </section>
+{% endblock %}
+
+
+

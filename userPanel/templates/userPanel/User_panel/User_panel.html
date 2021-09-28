@@ -1,0 +1,98 @@
+{% extends 'userPanel/base/index.html' %}
+
+{% block title %}
+پنل کاربری - داشبورد
+{% endblock %}
+
+
+{% block context %}
+
+    <br>
+  <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box" style="background-color:#1c3664;color:#fff;">
+            <div class="inner">
+              <h3>{{ digitalordering }}</h3>
+
+              <p>محصولات دیجیتالی</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-ios-cloud-download-outline" style="color:#fff;"></i>
+            </div>
+            <a href="{% url 'userPanel:digitalProducts_page' %}" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box" style="background-color:#ff3;color:#000;">
+            <div class="inner">
+              <h3>{{ physicalproducts }}</h3>
+
+              <p>محصولات فیزیکی</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-android-cart" style="color:#000;"></i>
+            </div>
+            <a href="{% url 'userPanel:physicalProducts_page' %}" class="small-box-footer" style="color:#000;">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box" style="background-color:#1c3664;color:#fff;">
+            <div class="inner">
+              <h3>{{ course }}</h3>
+
+              <p style='font-size: 13px'>دوره های خریداری شده</p>
+            </div>
+            <div class="icon">
+              <i class="mdi mdi-shopping" style="color:#fff;"></i>
+            </div>
+            <a href="{% url 'userPanel:courses_page' %}" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box" style="background-color: #ff3;color:#000;">
+            <div class="inner">
+              <h3>{{ comment_like }}</h3>
+
+              <p style='font-size: 14px'>دیدگاه های تایید شده</p>
+            </div>
+            <div class="icon">
+              <i class="fa  fa-thumbs-up" style="color:#000;"></i>
+            </div>
+            <a href="{% url 'userPanel:approvedComments_page' %}" class="small-box-footer" style="color:#000;">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+      <!-- /.row -->
+      <div class="row">
+        <section class="col-lg-12 col-md-12">
+          <div class="box box-info">
+            <div class="box-header">
+              <i class="fa fa-info-circle"></i>
+              <h3 class="box-title">شرایط و قوانین</h3>
+              <!-- tools box -->
+              <div class="pull-left box-tools">
+                <button type="button" class="btn bg-info btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+              <!-- /. tools -->
+            </div>
+            <div class="box-body">
+                {{ settings.terms_and_Conditions | safe }}
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- Main row -->
+    </section>
+
+{% endblock %}

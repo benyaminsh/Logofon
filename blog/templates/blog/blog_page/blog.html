@@ -1,0 +1,66 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block context %}
+        <div class="hero-wrap hero-wrap-2" style="background-image: url('{% static "site/images/backGround.jpg" %}'); background-attachment:fixed;">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-8 ftco-animate text-center">
+              <h1 class="mb-3 bread" style="text-align: center" >وبلاگ</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section">
+    	<div class="container">
+    		<div class="row d-flex">
+        {% for post in posts %}
+            <div class="col-md-4 d-flex ftco-animate">
+                <div class="blog-entry align-self-stretch">
+                  <a href="{% url 'blog:showBlog_page'  post.slug %}" class="block-20" style="background-image: url('{{ post.image.url }}');">
+                  </a>
+                  <div class="text p-4 d-block">
+                    <div class="meta mb-3">
+                      <div><a href="{% url 'blog:showBlog_page'  post.slug %}">{{ post.Pubdate }}</a></div>
+                    </div>
+                    <h3 class="heading mt-3"><a href="{% url 'blog:showBlog_page'  post.slug %}">{{ post.title }}</a></h3>
+                    <p>{{ post.content | safe | truncatechars:200 }}</p>
+                  </div>
+                </div>
+            </div>
+       {% endfor %}
+          </div>
+    		<div class="row mt-5">
+          <div class="col text-center">
+            <div class="block-27" style="margin-right: 400px">
+              <ul>
+                  {% if posts.has_previous %}
+                    <li><a href="{% url 'blog:blogs_page' %}?page={{ posts.previous_page_number }}"><</a></li>
+                    {% endif %}
+
+
+                  {% for p in posts.paginator.page_range %}
+                      {% if posts.number == p %}
+                          <li class="active"><span><a href="{% url 'blog:blogs_page'  %}?page={{ p }}">{{ p }}</a></span></li>
+                      {% else %}
+                          <li><span><a href="{% url 'blog:blogs_page'  %}?page={{ p }}">{{ p }}</a></span></li>
+                      {% endif %}
+                  {% endfor %}
+
+
+                {% if posts.has_next %}
+                    <li><a href="{% url 'blog:blogs_page' %}?page={{ posts.next_page_number }}"> > </a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+    	</div>
+    </section>
+{% endblock %}

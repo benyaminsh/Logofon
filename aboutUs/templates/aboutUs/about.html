@@ -1,0 +1,35 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block context %}
+    <div class="hero-wrap hero-wrap-2" style="background-image: url('{% static "site/images/backGround.jpg" %}'); background-attachment:fixed;">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-8 ftco-animate text-center">
+                <h1 class="mb-3 bread" style="text-align: center" >درباره ما</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <section class="ftco-section">
+    	<div class="container">
+    		<div class="row d-flex">
+    			<div class="col-md-6 d-flex ftco-animate">
+    				<div class="img img-about align-self-stretch" style="background-image: url('{{ aboutus.photo.url }}'); width: 100%;"></div>
+    			</div>
+    			<div class="col-md-6 pl-md-5 ftco-animate">
+    				<h2 class="mb-4">LogoFon |  لوگو فون</h2>
+    				<p>{{ aboutus.description | safe }}</p>
+    			</div>
+    		</div>
+    	</div>
+    </section>
+
+{% endblock %}

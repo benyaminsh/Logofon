@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css?family=Quicksand&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-align:right;
+}
+
+h3 {
+  /*font-family: Quicksand;*/
+  font-size: 1.5rem;
+}
+
+.alert {
+  bottom: 0;
+  right: auto;
+  /*width: 30%;*/
+  margin: 20px auto;
+  padding: 10px;
+  position: fixed;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 5px #ccc;
+  font-size: 1rem;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 99;
+}
+
+.close {
+  text-decoration: none !important;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  /*position: absolute;*/
+  width: 30px;
+  height: 30px;
+  opacity: 0.5;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 50%;
+  left: 15px;
+  top: 50px;
+  text-align: center;
+  font-size: 1.6em;
+  cursor: pointer;
+}
+
+.simple-alert {
+  background-color: #ebebeb;
+  border-right: 5px solid #6c6c6c;
+}
+.simple-alert .close {
+  border-color: #6c6c6c;
+  color: #6c6c6c;
+}
+
+.success-alert {
+  background-color: #a8f0c6;
+  border-right: 5px solid #178344;
+}
+.success-alert .close {
+  border-color: #178344;
+  color: #178344;
+  line-height: 3rem;
+  font-size: 2.5rem;
+
+}
+
+.danger-alert {
+  background-color: #f7a7a3;
+  border-right: 5px solid #8f130c;
+}
+.danger-alert .close {
+  border-color: #8f130c;
+  color: #8f130c;
+  line-height: 3rem;
+  font-size: 2.5rem;
+}
+
+.warning-alert {
+  background-color: #ffd48a;
+  border-right: 5px solid #8a5700;
+}
+.warning-alert .close {
+  border-color: #8a5700;
+  color: #8a5700;
+}
